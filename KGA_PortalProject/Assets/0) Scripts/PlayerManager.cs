@@ -20,8 +20,7 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        this.rigid = this.GetComponent<Rigidbody>();
-        player = this.gameObject.transform;
+        this.rigid = player.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -32,7 +31,7 @@ public class PlayerManager : MonoBehaviour
 
     void InputKey()
     {
-        moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        this.moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
@@ -42,12 +41,13 @@ public class PlayerManager : MonoBehaviour
 
     void Move()
     {
+
         Vector3 lookForward = new Vector3(playerCamera.forward.x, 0f, playerCamera.forward.z).normalized;
         Vector3 lookRight = new Vector3(playerCamera.right.x, 0f, playerCamera.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
 
-        player.forward = lookForward;
-        player.transform.position += moveDir * Time.deltaTime * moveSpeed;
+        // this.player.forward = lookForward;
+        this.player.position += moveDir * Time.deltaTime * moveSpeed;
     }
 
     void Jump()
