@@ -35,3 +35,6 @@ public class CameraMove : MonoBehaviour
         // +, - 값의 두가지 설정을 두어서 원하는 조작방법으로 조작할 수 있도록 옵션에 추가하자
     }
 }
+
+
+

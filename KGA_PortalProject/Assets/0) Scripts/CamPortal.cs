@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CamPortal : MonoBehaviour
 {
-    public Transform Player;
-
+    public Transform PlayerCamera;
+    public Transform Portal;
+    public Transform OtherPortal;
 
     void Start()
     {
@@ -14,11 +15,13 @@ public class CamPortal : MonoBehaviour
 
     void Update()
     {
-        Lookfoward();
+        Vector3 playerOffsetFromPortal = PlayerCamera.position - OtherPortal.position;
+        this.transform.position = Portal.position + playerOffsetFromPortal;
+
+        float angularDifferentBetweenPortalRotations = Quaternion.Angle(Portal.rotation, OtherPortal.rotation);
+        Quaternion portalRotationalDifference = Quaternion.AngleAxis(angularDifferentBetweenPortalRotations, Vector3.up);
+        Vector3 newCameraDirection = portalRotationalDifference * PlayerCamera.forward;
+        this.transform.rotation = Quaternion.LookRotation(newCameraDirection, Vector3.up);
     }
 
-    void Lookfoward()
-    {
-        this.transform.forward = Player.transform.forward;
-    }
 }
