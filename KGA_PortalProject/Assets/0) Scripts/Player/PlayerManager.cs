@@ -6,17 +6,22 @@ public class PlayerManager : MonoBehaviour
 {
     [Header("캐릭터")]
     [SerializeField] Transform player;
-
-    [Header("카메라")]
-    [SerializeField] private Transform playerCamera;
-
-    Vector2 moveInput;
+    Vector2 playerInput;
 
     // TEST
     public float jumpForce;
     public float moveSpeed;
     Rigidbody rigid;
     //
+
+    [Header("카메라")]
+    [SerializeField] Transform playerCamera;
+    [SerializeField] float CameraSeneitivity;
+    [SerializeField] float CameraRotationLimit;
+    Vector2 cameraInput;
+    float currentCameraRotationX;
+    
+
 
     void Start()
     {
@@ -25,29 +30,32 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        InputKey();
-        Move();
+        InputData(); // 인풋
+        PlayerMove(); // 이동
+        PlayerRotation(); // 좌우
+        CameraMove(); // 상하
     }
 
-    void InputKey()
+    void InputData()
     {
-        this.moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
     }
 
-    void Move()
+    void PlayerMove()
     {
-
-        Vector3 lookForward = new Vector3(playerCamera.forward.x, 0f, playerCamera.forward.z).normalized;
+        Vector3 lookForward = new Vector3( playerCamera.forward.x, 0f, playerCamera.forward.z).normalized;
         Vector3 lookRight = new Vector3(playerCamera.right.x, 0f, playerCamera.right.z).normalized;
-        Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
+        Vector3 moveDir = lookForward * playerInput.y + lookRight * playerInput.x;
 
         // this.player.forward = lookForward;
-        this.player.position += moveDir * Time.deltaTime * moveSpeed;
+
+        rigid.MovePosition(player.position + moveDir * Time.deltaTime * moveSpeed);
     }
 
     void Jump()
@@ -55,4 +63,19 @@ public class PlayerManager : MonoBehaviour
         rigid.velocity = Vector3.up * jumpForce;
     }
 
+    void CameraMove()
+    {
+        // 상하 움직임
+        float cameraRotationX = cameraInput.x * CameraSeneitivity;
+        currentCameraRotationX -= cameraRotationX;
+        currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -CameraRotationLimit, CameraRotationLimit);
+
+        playerCamera.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+    }
+
+    void PlayerRotation()
+    {
+        Vector3 playerRotationY = new Vector3(0f, cameraInput.y, 0f) * CameraSeneitivity;
+        rigid.MoveRotation(rigid.rotation * Quaternion.Euler(playerRotationY));
+    }
 }
