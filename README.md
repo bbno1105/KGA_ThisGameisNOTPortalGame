@@ -3,6 +3,9 @@
 1인칭 3D게임을 기반으로 추후 VR 프로젝트로 디벨롭을 진행하는 프로젝트
 
 # 프로젝트 일정
+
+프로젝트 시트 : https://docs.google.com/spreadsheets/d/1HMlrA91u123zz1HeZAoOkKTD9c5Q7uULViG5rKR9GJA/edit?usp=sharing
+
 ## [3D 프로젝트]
 ### 2022-08-16 ~ 2022-08-26 (약 2주)
 #### PreProduction (Prototype)
