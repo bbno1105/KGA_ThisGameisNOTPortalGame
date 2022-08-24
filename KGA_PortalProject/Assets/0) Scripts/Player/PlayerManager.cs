@@ -8,6 +8,11 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Transform player;
     Vector2 playerInput;
 
+    bool isPick;
+    float objectDistance;
+    float objectRadius;
+    Vector3 objectScale;
+
     // TEST
     public float jumpForce;
     public float moveSpeed;
@@ -18,9 +23,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Transform playerCamera;
     [SerializeField] float CameraSeneitivity;
     [SerializeField] float CameraRotationLimit;
+    [SerializeField] CameraAim cameraAim;
     Vector2 cameraInput;
     float currentCameraRotationX;
-    
 
 
     void Start()
@@ -34,6 +39,7 @@ public class PlayerManager : MonoBehaviour
         PlayerMove(); // 이동
         PlayerRotation(); // 좌우
         CameraMove(); // 상하
+        Pick();
     }
 
     void InputData()
@@ -41,9 +47,28 @@ public class PlayerManager : MonoBehaviour
         this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
 
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if(!isPick && cameraAim.isHitObject)
+            {
+                isPick = true;
+                objectDistance = (cameraAim.hitObject.transform.position - playerCamera.transform.position).magnitude;
+                objectScale = cameraAim.hitObject.transform.localScale;
+                objectRadius = (cameraAim.hitObject.transform.position - cameraAim.hitRay.point).magnitude;
+                cameraAim.hitObject.GetComponent<BoxCollider>().enabled = false;
+                cameraAim.hitObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+            else if(isPick) // 놓는다
+            {
+                isPick = false;
+                cameraAim.hitObject.GetComponent<BoxCollider>().enabled = true;
+                cameraAim.hitObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
         }
     }
 
@@ -61,6 +86,19 @@ public class PlayerManager : MonoBehaviour
     void Jump()
     {
         rigid.velocity = Vector3.up * jumpForce;
+    }
+
+    void Pick()
+    {
+        if(isPick) // test
+        {
+            float wallDistance = (cameraAim.hitWallRay.point - playerCamera.transform.position).magnitude;
+            cameraAim.hitObject.transform.localScale = objectScale * (wallDistance / objectDistance);
+            float newRadius = objectRadius * (wallDistance / objectDistance);
+
+            cameraAim.hitObject.transform.position = cameraAim.hitWallRay.point + cameraAim.hitWallRay.normal * newRadius;
+            
+        }
     }
 
     void CameraMove()

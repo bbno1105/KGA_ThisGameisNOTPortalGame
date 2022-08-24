@@ -6,41 +6,59 @@ public class CameraAim : MonoBehaviour
 {
     public GameObject hitObject;
     public Vector3 hitPos;
-    public RaycastHit hit;
-    
-    public bool isTarget;
-    public bool isTrap;
+    public RaycastHit hitRay;
+    public bool isHitObject;
+    int targetLayMask;
+
+
+    public GameObject hitWallObject;
+    public Vector3 hitWallPos;
+    public RaycastHit hitWallRay;
+    int WallLayMask;
 
     Vector3 screenCenter;
-
-    public bool IsTrapOn = false;
 
     void Start()
     {
         screenCenter = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2);
+
+        LayerMask targetLayer = LayerMask.NameToLayer("ActiveObject");
+        LayerMask WallLayer = LayerMask.NameToLayer("Wall");
+
+        targetLayMask = 1 << targetLayer.value;
+        WallLayMask = 1 << WallLayer.value;
     }
 
     void Update()
     {
         FindTarget();
+        FindWall();
     }
 
     void FindTarget()
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
-        LayerMask targetLayer = LayerMask.NameToLayer("Tile");
-        int targetLayMask = 1 << targetLayer.value;
-
-        if (Physics.Raycast(ray, out hit, 10f, targetLayMask))
+        if (Physics.Raycast(ray, out hitRay,10f, targetLayMask))
         {
-            isTarget = true;
-            hitObject = hit.collider.gameObject;
-            hitPos = hit.collider.gameObject.transform.position;
+            hitObject = hitRay.collider.gameObject;
+            hitPos = hitRay.collider.gameObject.transform.position;
+            isHitObject = true;
         }
         else
         {
-            isTarget = false;
+            isHitObject = false;
+        }
+    }
+
+    void FindWall()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        if (Physics.Raycast(ray, out hitWallRay, 10f, WallLayMask))
+        {
+            hitWallObject = hitWallRay.collider.gameObject;
+            hitWallPos = hitWallRay.collider.gameObject.transform.position;
         }
     }
 }

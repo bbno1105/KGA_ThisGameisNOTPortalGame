@@ -4,27 +4,25 @@ using UnityEngine;
 
 public class PortalTextureSetup : MonoBehaviour
 {
-    public Camera CameraA;
-    public Material CameraMatA;
-
-    public Camera CameraB;
-    public Material CameraMatB;
+    public Camera[] Camera;
+    public Material[] CameraMat;
 
     void Start()
     {
-        if(CameraA.targetTexture != null)
-        {
-            CameraA.targetTexture.Release();
-        }
-        CameraA.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        CameraMatA.mainTexture = CameraA.targetTexture;
-
-        if (CameraB.targetTexture != null)
-        {
-            CameraB.targetTexture.Release();
-        }
-        CameraB.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        CameraMatB.mainTexture = CameraB.targetTexture;
+        RenderCamera();
     }
 
+    void RenderCamera()
+    {
+        for (int i = 0; i < Camera.Length; i++)
+        {
+            if (Camera[i] == null) continue;
+            if (Camera[i].targetTexture != null)
+            {
+                Camera[i].targetTexture.Release();
+            }
+            Camera[i].targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+            CameraMat[i].mainTexture = Camera[i].targetTexture;
+        }
+    }
 }

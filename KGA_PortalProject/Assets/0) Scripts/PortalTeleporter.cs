@@ -11,12 +11,14 @@ public class PortalTeleporter : MonoBehaviour
 
     void Update()
     {
-        if(playerIsOverlapping)
-        {
-            Vector3 portalToPlayer = Player.position - this.transform.position;
-            float dotProduct = Vector3.Dot(this.transform.up, portalToPlayer);
+        Vector3 portalToPlayer = Player.position - this.transform.position;
+        float dotProduct = Vector3.Dot(this.transform.forward, portalToPlayer);
 
-            if(dotProduct < 0f)
+        // UnityEngine.Debug.Log($"{gameObject.name} : {dotProduct}");
+
+        if (playerIsOverlapping)
+        {
+            if (dotProduct < 0f)
             {
                 float rotationDiffrent = -Quaternion.Angle(this.transform.rotation, reciever.rotation);
                 rotationDiffrent += 180f;
@@ -24,9 +26,9 @@ public class PortalTeleporter : MonoBehaviour
 
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiffrent, 0f) * portalToPlayer;
                 Player.position = reciever.position + positionOffset;
-
-                playerIsOverlapping = false;
+                
             }
+            playerIsOverlapping = false;
         }
     }
 
@@ -43,6 +45,7 @@ public class PortalTeleporter : MonoBehaviour
         if (_other.tag == "Player")
         {
             playerIsOverlapping = false;
+
         }
     }
 }
