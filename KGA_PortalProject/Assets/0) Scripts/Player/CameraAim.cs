@@ -39,7 +39,7 @@ public class CameraAim : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
-        if (Physics.Raycast(ray, out hitRay,10f, targetLayMask))
+        if (Physics.Raycast(ray, out hitRay,1000f, targetLayMask))
         {
             hitObject = hitRay.collider.gameObject;
             hitPos = hitRay.collider.gameObject.transform.position;
@@ -55,7 +55,7 @@ public class CameraAim : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
-        if (Physics.Raycast(ray, out hitWallRay, 10f, WallLayMask))
+        if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask))
         {
             hitWallObject = hitWallRay.collider.gameObject;
             hitWallPos = hitWallRay.collider.gameObject.transform.position;

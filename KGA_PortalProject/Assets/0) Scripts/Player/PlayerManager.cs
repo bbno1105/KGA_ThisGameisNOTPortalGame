@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     float objectDistance;
     float objectRadius;
     Vector3 objectScale;
+    GameObject pickObject;
 
     // TEST
     public float jumpForce;
@@ -57,17 +58,18 @@ public class PlayerManager : MonoBehaviour
             if(!isPick && cameraAim.isHitObject)
             {
                 isPick = true;
+                pickObject = cameraAim.hitObject;
                 objectDistance = (cameraAim.hitObject.transform.position - playerCamera.transform.position).magnitude;
                 objectScale = cameraAim.hitObject.transform.localScale;
                 objectRadius = (cameraAim.hitObject.transform.position - cameraAim.hitRay.point).magnitude;
-                cameraAim.hitObject.GetComponent<BoxCollider>().enabled = false;
-                cameraAim.hitObject.GetComponent<Rigidbody>().isKinematic = true;
+                pickObject.GetComponent<BoxCollider>().enabled = false;
+                pickObject.GetComponent<Rigidbody>().isKinematic = true;
             }
             else if(isPick) // ³õ´Â´Ù
             {
                 isPick = false;
-                cameraAim.hitObject.GetComponent<BoxCollider>().enabled = true;
-                cameraAim.hitObject.GetComponent<Rigidbody>().isKinematic = false;
+                pickObject.GetComponent<BoxCollider>().enabled = true;
+                pickObject.GetComponent<Rigidbody>().isKinematic = false;
             }
         }
     }
@@ -93,10 +95,10 @@ public class PlayerManager : MonoBehaviour
         if(isPick) // test
         {
             float wallDistance = (cameraAim.hitWallRay.point - playerCamera.transform.position).magnitude;
-            cameraAim.hitObject.transform.localScale = objectScale * (wallDistance / objectDistance);
+            pickObject.transform.localScale = objectScale * (wallDistance / objectDistance);
             float newRadius = objectRadius * (wallDistance / objectDistance);
 
-            cameraAim.hitObject.transform.position = cameraAim.hitWallRay.point + cameraAim.hitWallRay.normal * newRadius;
+            pickObject.transform.position = cameraAim.hitWallRay.point + cameraAim.hitWallRay.normal * newRadius;
             
         }
     }
