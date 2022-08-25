@@ -15,6 +15,7 @@ public class CameraAim : MonoBehaviour
     public Vector3 hitWallPos;
     public RaycastHit hitWallRay;
     int WallLayMask;
+    int WallLayMask2;
 
     Vector3 screenCenter;
 
@@ -24,9 +25,11 @@ public class CameraAim : MonoBehaviour
 
         LayerMask targetLayer = LayerMask.NameToLayer("ActiveObject");
         LayerMask WallLayer = LayerMask.NameToLayer("Wall");
+        LayerMask WallLayer2 = LayerMask.NameToLayer("DarkWall");
 
         targetLayMask = 1 << targetLayer.value;
         WallLayMask = 1 << WallLayer.value;
+        WallLayMask2 = 1 << WallLayer2.value;
     }
 
     void Update()
@@ -56,6 +59,11 @@ public class CameraAim : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
         if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask))
+        {
+            hitWallObject = hitWallRay.collider.gameObject;
+            hitWallPos = hitWallRay.collider.gameObject.transform.position;
+        }
+        else if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask2))
         {
             hitWallObject = hitWallRay.collider.gameObject;
             hitWallPos = hitWallRay.collider.gameObject.transform.position;

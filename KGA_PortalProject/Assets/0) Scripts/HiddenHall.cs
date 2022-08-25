@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class HiddenHall : MonoBehaviour
 {
-    [SerializeField] GameObject[] hidden;
+    [Header("처음")]
+    [SerializeField] GameObject hiddenA;
+
+    [Header("나중")]
+    [SerializeField] GameObject hiddenB;
 
     void changeHidden()
     {
-        hidden[0].gameObject.SetActive(false);
-        hidden[1].gameObject.SetActive(false);
-        hidden[2].gameObject.SetActive(true);
-        hidden[3].gameObject.SetActive(true);
+        hiddenA.gameObject.SetActive(false);
+        hiddenB.gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
