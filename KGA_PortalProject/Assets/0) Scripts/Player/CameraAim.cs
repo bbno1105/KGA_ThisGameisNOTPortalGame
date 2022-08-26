@@ -10,12 +10,14 @@ public class CameraAim : MonoBehaviour
     public bool isHitObject;
     int targetLayMask;
 
-
     public GameObject hitWallObject;
     public Vector3 hitWallPos;
     public RaycastHit hitWallRay;
     int WallLayMask;
     int WallLayMask2;
+
+    float wallDistance;
+    float targetDistance;
 
     Vector3 screenCenter;
 
@@ -34,19 +36,29 @@ public class CameraAim : MonoBehaviour
 
     void Update()
     {
-        FindTarget();
         FindWall();
+        FindTarget();
     }
 
     void FindTarget()
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
 
-        if (Physics.Raycast(ray, out hitRay,1000f, targetLayMask))
+        if (Physics.Raycast(ray, out hitRay,100000f, targetLayMask))
         {
-            hitObject = hitRay.collider.gameObject;
-            hitPos = hitRay.collider.gameObject.transform.position;
-            isHitObject = true;
+            Vector3 hitPointPos = hitRay.point;
+            targetDistance = (Camera.main.gameObject.transform.position - hitPointPos).magnitude;
+
+            if(targetDistance < wallDistance)
+            {
+                hitPos = hitRay.collider.gameObject.transform.position;
+                hitObject = hitRay.collider.gameObject;
+                isHitObject = true;
+            }
+            else
+            {
+                isHitObject = false;
+            }
         }
         else
         {
@@ -57,16 +69,25 @@ public class CameraAim : MonoBehaviour
     void FindWall()
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
         if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask))
         {
-            hitWallObject = hitWallRay.collider.gameObject;
+            Vector3 hitPointPos = hitWallRay.point;
+            wallDistance = (Camera.main.gameObject.transform.position - hitPointPos).magnitude;
+
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
+            hitWallObject = hitWallRay.collider.gameObject;
         }
         else if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask2))
         {
+            Vector3 hitPointPos = hitWallRay.point;
+            wallDistance = (Camera.main.gameObject.transform.position - hitPointPos).magnitude;
+
             hitWallObject = hitWallRay.collider.gameObject;
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
+        }
+        else
+        {
+            wallDistance = 1000000f;
         }
     }
 }

@@ -16,7 +16,7 @@ public class HiddenHall : MonoBehaviour
         hiddenB.gameObject.SetActive(true);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         changeHidden();
     }

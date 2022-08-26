@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     float objectRadius;
     Vector3 objectScale;
     GameObject pickObject;
-
+    bool canJump;
     // TEST
     public float jumpForce;
     public float moveSpeed;
@@ -32,6 +32,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         this.rigid = player.GetComponent<Rigidbody>();
+        canJump = true;
     }
 
     void Update()
@@ -41,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         PlayerRotation(); // 좌우
         CameraMove(); // 상하
         Pick();
+        JumpRay();
     }
 
     void InputData()
@@ -48,7 +50,7 @@ public class PlayerManager : MonoBehaviour
         this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             Jump();
         }
@@ -62,13 +64,27 @@ public class PlayerManager : MonoBehaviour
                 objectDistance = (cameraAim.hitObject.transform.position - playerCamera.transform.position).magnitude;
                 objectScale = cameraAim.hitObject.transform.localScale;
                 objectRadius = (cameraAim.hitObject.transform.position - cameraAim.hitRay.point).magnitude;
-                pickObject.GetComponent<BoxCollider>().enabled = false;
+                if(pickObject.GetComponent<BoxCollider>() != null)
+                {
+                    pickObject.GetComponent<BoxCollider>().enabled = false;
+                }
+                else if(pickObject.GetComponent<SphereCollider>() != null)
+                {
+                    pickObject.GetComponent<SphereCollider>().enabled = false;
+                }
                 pickObject.GetComponent<Rigidbody>().isKinematic = true;
             }
             else if(isPick) // 놓는다
             {
                 isPick = false;
-                pickObject.GetComponent<BoxCollider>().enabled = true;
+                if (pickObject.GetComponent<BoxCollider>() != null)
+                {
+                    pickObject.GetComponent<BoxCollider>().enabled = true;
+                }
+                else if (pickObject.GetComponent<SphereCollider>() != null)
+                {
+                    pickObject.GetComponent<SphereCollider>().enabled = true;
+                }
                 pickObject.GetComponent<Rigidbody>().isKinematic = false;
             }
         }
@@ -88,6 +104,19 @@ public class PlayerManager : MonoBehaviour
     void Jump()
     {
         rigid.velocity = Vector3.up * jumpForce;
+        canJump = false;
+    }
+
+    void JumpRay()
+    {
+        RaycastHit hit; 
+        Debug.DrawRay(player.transform.position, Vector3.down * 0.8f, Color.red); 
+        if (Physics.Raycast(player.transform.position, Vector3.down, out hit, 0.8f)) 
+        { 
+            canJump = true; 
+            return;
+        }
+        canJump = false;
     }
 
     void Pick()
