@@ -124,7 +124,15 @@ public class PlayerManager : MonoBehaviour
         if(isPick) // test
         {
             float wallDistance = (cameraAim.hitWallRay.point - playerCamera.transform.position).magnitude;
-            pickObject.transform.localScale = objectScale * (wallDistance / objectDistance);
+            Vector3 newScale = objectScale * (wallDistance / objectDistance);
+            float newScaleValue = newScale.x;
+
+            newScaleValue = Mathf.Clamp(newScaleValue, 0.05f, 4f);
+
+            UnityEngine.Debug.Log("newScaleValue : " + newScaleValue);
+
+            pickObject.transform.localScale = new Vector3(newScaleValue, newScaleValue, newScaleValue);
+
             float newRadius = objectRadius * (wallDistance / objectDistance);
 
             pickObject.transform.position = cameraAim.hitWallRay.point + cameraAim.hitWallRay.normal * newRadius;

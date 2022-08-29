@@ -7,6 +7,9 @@ public class PortalTeleporter : MonoBehaviour
     public Transform Player;
     public Transform reciever;
 
+    public GameObject ActivePortal;
+    public GameObject ActiveFalsePortal;
+
     bool playerIsOverlapping = false;
 
     void Update()
@@ -29,6 +32,9 @@ public class PortalTeleporter : MonoBehaviour
 
                 this.transform.parent.GetChild(0).gameObject.SetActive(false);
                 reciever.parent.GetChild(0).gameObject.SetActive(true);
+
+                if(ActivePortal != null) ActivePortal.SetActive(true);
+                if(ActiveFalsePortal != null) ActiveFalsePortal.SetActive(false);
             }
             playerIsOverlapping = false;
         }

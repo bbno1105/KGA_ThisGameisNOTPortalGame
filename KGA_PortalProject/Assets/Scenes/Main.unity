@@ -2854,6 +2854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 719664071}
+  ActivePortal: {fileID: 967988245}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &101720998
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3071,6 +3073,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 719664071}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &105345149
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15602,7 +15606,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &536198525
 Transform:
   m_ObjectHideFlags: 0
@@ -17235,6 +17239,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 101720996}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &614834133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19954,6 +19960,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 101720996}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 967988245}
 --- !u!65 &719664073
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26527,7 +26535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &967988246
 Transform:
   m_ObjectHideFlags: 0
@@ -35715,6 +35723,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1694053329}
+  ActivePortal: {fileID: 536198524}
+  ActiveFalsePortal: {fileID: 2144654269}
 --- !u!65 &1301104663
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36405,6 +36415,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1644248705}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1344684937
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38720,6 +38732,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1644248705}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1428518844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45374,6 +45388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1344684935}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1644248707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46547,6 +46563,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1301104661}
+  ActivePortal: {fileID: 2144654269}
+  ActiveFalsePortal: {fileID: 536198524}
 --- !u!65 &1694053331
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47394,6 +47412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1301104661}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1731964483
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47994,6 +48014,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1694053329}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1744000641
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52061,6 +52083,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 2044210238}
   reciever: {fileID: 1344684935}
+  ActivePortal: {fileID: 0}
+  ActiveFalsePortal: {fileID: 0}
 --- !u!65 &1892087789
 BoxCollider:
   m_ObjectHideFlags: 0
