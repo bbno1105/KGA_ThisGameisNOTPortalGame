@@ -9,6 +9,7 @@ TagManager:
   - Blue
   - bullet
   - Ground
+  - Moon
   layers:
   - Default
   - TransparentFX

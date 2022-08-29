@@ -129,8 +129,6 @@ public class PlayerManager : MonoBehaviour
 
             newScaleValue = Mathf.Clamp(newScaleValue, 0.05f, 4f);
 
-            UnityEngine.Debug.Log("newScaleValue : " + newScaleValue);
-
             pickObject.transform.localScale = new Vector3(newScaleValue, newScaleValue, newScaleValue);
 
             float newRadius = objectRadius * (wallDistance / objectDistance);
