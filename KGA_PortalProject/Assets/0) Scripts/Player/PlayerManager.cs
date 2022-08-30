@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float CameraSeneitivity;
     [SerializeField] float CameraRotationLimit;
     [SerializeField] CameraAim cameraAim;
+
     Vector2 cameraInput;
     float currentCameraRotationX;
 
@@ -61,13 +62,14 @@ public class PlayerManager : MonoBehaviour
         // this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         // this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
 
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        // if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        if(OVRInput.GetUp(OVRInput.RawButton.A))
         {
             Jump();
         }
 
         //if(Input.GetKeyDown(KeyCode.E))
-        if(OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
             if(!isPick && cameraAim.isHitObject)
             {
@@ -164,7 +166,8 @@ public class PlayerManager : MonoBehaviour
 
     void PlayerRotation()
     {
-        Vector3 playerRotationY = new Vector3(0f, cameraInput.y, 0f) * CameraSeneitivity;
+        Debug.Log(playerCamera.position);
+        Vector3 playerRotationY = new Vector3(0f, 0f, 0f) * CameraSeneitivity;
         rigid.MoveRotation(rigid.rotation * Quaternion.Euler(playerRotationY));
     }
 }
