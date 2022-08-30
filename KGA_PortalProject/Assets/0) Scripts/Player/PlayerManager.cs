@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using OVR;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -43,19 +44,30 @@ public class PlayerManager : MonoBehaviour
         CameraMove(); // 상하
         Pick();
         JumpRay();
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            UnityEngine.Debug.Log("스샷완료");
+            ScreenCapture.CaptureScreenshot("wow.png");
+        }
+#endif
     }
 
     void InputData()
     {
-        this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
+        this.playerInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
+        // this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        // this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
 
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             Jump();
         }
 
-        if(Input.GetKeyDown(KeyCode.E))
+        //if(Input.GetKeyDown(KeyCode.E))
+        if(OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
         {
             if(!isPick && cameraAim.isHitObject)
             {
@@ -87,7 +99,9 @@ public class PlayerManager : MonoBehaviour
                 }
                 pickObject.GetComponent<Rigidbody>().isKinematic = false;
             }
+
         }
+
     }
 
     void PlayerMove()
@@ -127,7 +141,7 @@ public class PlayerManager : MonoBehaviour
             Vector3 newScale = objectScale * (wallDistance / objectDistance);
             float newScaleValue = newScale.x;
 
-            newScaleValue = Mathf.Clamp(newScaleValue, 0.05f, 4f);
+            newScaleValue = Mathf.Clamp(newScaleValue, 0.05f, 3f);
 
             pickObject.transform.localScale = new Vector3(newScaleValue, newScaleValue, newScaleValue);
 
