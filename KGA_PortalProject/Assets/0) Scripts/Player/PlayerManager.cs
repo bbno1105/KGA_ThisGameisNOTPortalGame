@@ -1,3 +1,6 @@
+// #define OCULUS
+#define UNITY
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,7 +42,14 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        InputData(); // ÀÎÇ²
+#if UNITY
+        KeyInput(); // Å°º¸µå ÀÎÇ²
+#endif
+
+#if OCULUS
+        OculusInputData(); // ¿ÀÅ§·¯½º ÀÎÇ²
+#endif
+
         PlayerMove(); // ÀÌµ¿
         PlayerRotation(); // ÁÂ¿ì
         CameraMove(); // »óÇÏ
@@ -55,21 +65,17 @@ public class PlayerManager : MonoBehaviour
 #endif
     }
 
-    void InputData()
+    void KeyInput()
     {
-        this.playerInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-
-        // this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        // this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
-
-        // if (Input.GetKeyDown(KeyCode.Space) && canJump)
-        if(OVRInput.GetUp(OVRInput.RawButton.A))
+        this.playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        this.cameraInput = new Vector2(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
+        
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             Jump();
         }
 
-        //if(Input.GetKeyDown(KeyCode.E))
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             if(!isPick && cameraAim.isHitObject)
             {
@@ -103,7 +109,51 @@ public class PlayerManager : MonoBehaviour
             }
 
         }
+    }
 
+    void OculusInput()
+    {
+        this.playerInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
+        if (OVRInput.GetUp(OVRInput.RawButton.A))
+        {
+            Jump();
+        }
+
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+        {
+            if (!isPick && cameraAim.isHitObject)
+            {
+                isPick = true;
+                pickObject = cameraAim.hitObject;
+                objectDistance = (cameraAim.hitObject.transform.position - playerCamera.transform.position).magnitude;
+                objectScale = cameraAim.hitObject.transform.localScale;
+                objectRadius = (cameraAim.hitObject.transform.position - cameraAim.hitRay.point).magnitude;
+                if (pickObject.GetComponent<BoxCollider>() != null)
+                {
+                    pickObject.GetComponent<BoxCollider>().enabled = false;
+                }
+                else if (pickObject.GetComponent<SphereCollider>() != null)
+                {
+                    pickObject.GetComponent<SphereCollider>().enabled = false;
+                }
+                pickObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+            else if (isPick) // ³õ´Â´Ù
+            {
+                isPick = false;
+                if (pickObject.GetComponent<BoxCollider>() != null)
+                {
+                    pickObject.GetComponent<BoxCollider>().enabled = true;
+                }
+                else if (pickObject.GetComponent<SphereCollider>() != null)
+                {
+                    pickObject.GetComponent<SphereCollider>().enabled = true;
+                }
+                pickObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+
+        }
     }
 
     void PlayerMove()
@@ -164,10 +214,9 @@ public class PlayerManager : MonoBehaviour
         playerCamera.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
     }
 
-    void PlayerRotation()
+    void PlayerRotation() // ÁÂ¿ì
     {
-        Debug.Log(playerCamera.position);
-        Vector3 playerRotationY = new Vector3(0f, 0f, 0f) * CameraSeneitivity;
+        Vector3 playerRotationY = new Vector3(0f, cameraInput.y, 0f) * CameraSeneitivity;
         rigid.MoveRotation(rigid.rotation * Quaternion.Euler(playerRotationY));
     }
 }

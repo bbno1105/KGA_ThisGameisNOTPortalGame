@@ -10400,7 +10400,7 @@ MonoBehaviour:
   player: {fileID: 2044210238}
   jumpForce: 6
   moveSpeed: 4
-  playerCamera: {fileID: 963194228}
+  playerCamera: {fileID: 1570945038}
   CameraSeneitivity: 1.4
   CameraRotationLimit: 90
   cameraAim: {fileID: 353359593}
@@ -11053,7 +11053,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8100000, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
 --- !u!4 &361611355 stripped
 Transform:
@@ -27295,7 +27296,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.000000029802322, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
