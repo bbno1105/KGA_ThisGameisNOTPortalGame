@@ -8,11 +8,6 @@ public class CamPortal : MonoBehaviour
     public Transform Portal;
     public Transform OtherPortal;
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         float angularDifferentBetweenPortalRotations = Quaternion.Angle(Portal.rotation, OtherPortal.rotation);

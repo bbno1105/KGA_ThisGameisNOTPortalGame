@@ -56,13 +56,6 @@ public class PlayerManager : MonoBehaviour
         Pick();
         JumpRay();
 
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            UnityEngine.Debug.Log("½º¼¦¿Ï·á");
-            ScreenCapture.CaptureScreenshot("wow.png");
-        }
-#endif
     }
 
     void KeyInput()
@@ -197,7 +190,7 @@ public class PlayerManager : MonoBehaviour
 
             pickObject.transform.localScale = new Vector3(newScaleValue, newScaleValue, newScaleValue);
 
-            float newRadius = objectRadius * (wallDistance / objectDistance);
+            float newRadius = objectRadius * (newScaleValue / objectScale.z);
 
             pickObject.transform.position = cameraAim.hitWallRay.point + cameraAim.hitWallRay.normal * newRadius;
             
