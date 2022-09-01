@@ -119,7 +119,5 @@ public class CameraAim : MonoBehaviour
         {
             wallDistance = 1000000f;
         }
-
-        UnityEngine.Debug.Log($"wallDistance : {wallDistance}");
     }
 }
