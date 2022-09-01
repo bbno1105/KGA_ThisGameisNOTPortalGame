@@ -12,11 +12,13 @@ public class Title : MonoBehaviour
     [SerializeField] Text[] menu1Text;
     [SerializeField] Transform menu1Cam;
 
-
     [Header("Menu2")]
     [SerializeField] GameObject menu2;
     [SerializeField] Transform menu2Cam;
     [SerializeField] Text playerNameInput;
+
+    [SerializeField] Image ImgFade;
+
 
     int nowMenu;
     int menuNumber;
@@ -72,8 +74,6 @@ public class Title : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    if (GameManager.Instance.playerName == "") return;
-
                     switch (menuNumber)
                     {
                         case 0:
@@ -91,6 +91,8 @@ public class Title : MonoBehaviour
             case 1:
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
+                    if (playerNameInput.text == "") return;
+
                     GameManager.Instance.playerName = playerNameInput.text;
                     StartCoroutine("LoadSceneCoroutine");
 
@@ -145,12 +147,16 @@ public class Title : MonoBehaviour
 
     IEnumerator LoadSceneCoroutine()
     {
-        TTS.Instance.TTSPlay(GameManager.Instance.playerName + "님 안녕하세요. 프로젝트를 시작하겠습니다.");
+        float fadeValue = 0;
 
-        while(TTS.Instance.audioSource.isPlaying)
+        while (fadeValue <= 1)
         {
-            yield return new WaitForSeconds(0.5f);
+            ImgFade.color = new Color(0, 0, 0, fadeValue);
+            fadeValue += 0.01f;
+            yield return new WaitForSeconds(0.01f);
         }
+
+        yield return new WaitForSeconds(1f);
 
         SceneManager.LoadScene(1);
     }

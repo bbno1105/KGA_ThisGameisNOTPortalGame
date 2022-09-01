@@ -13,10 +13,11 @@ public class CameraAim : MonoBehaviour
     public GameObject hitWallObject;
     public Vector3 hitWallPos;
     public RaycastHit hitWallRay;
-    int WallLayMask;
-    int WallLayMask2;
+    int wallLayMask;
+    int wallLayMask2;
+    int portalMask;
 
-    float wallDistance;
+    public float wallDistance;
     float targetDistance;
 
     Vector3 screenCenter;
@@ -30,8 +31,9 @@ public class CameraAim : MonoBehaviour
         LayerMask WallLayer2 = LayerMask.NameToLayer("DarkWall");
 
         targetLayMask = 1 << targetLayer.value;
-        WallLayMask = 1 << WallLayer.value;
-        WallLayMask2 = 1 << WallLayer2.value;
+        wallLayMask = 1 << WallLayer.value;
+        wallLayMask2 = 1 << WallLayer2.value;
+        portalMask = LayerMask.GetMask("Portal");
     }
 
     void Update()
@@ -43,6 +45,15 @@ public class CameraAim : MonoBehaviour
     void FindTarget()
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        if (Physics.Raycast(ray, out hitRay,100000f, portalMask))
+        {
+            Vector3 rayDirection = hitRay.point - Camera.main.gameObject.transform.position;
+            Vector3 hitPortalPoint = hitRay.point - hitRay.collider.gameObject.transform.position;
+            Vector3 newPortalPosition = hitRay.collider.GetComponent<PortalTeleporter>().reciever.transform.position;
+            ray.origin = newPortalPosition + hitPortalPoint;
+            ray.direction = rayDirection;
+        }
 
         if (Physics.Raycast(ray, out hitRay,100000f, targetLayMask))
         {
@@ -69,18 +80,37 @@ public class CameraAim : MonoBehaviour
     void FindWall()
     {
         Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-        if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask))
+        Vector3 startRayPoint = Camera.main.gameObject.transform.position;
+
+        wallDistance = 0;
+
+
+        if (Physics.Raycast(ray, out hitRay, 100000f, portalMask))
+        {
+            Vector3 rayDirection = hitRay.point - startRayPoint;
+            Vector3 hitPortalPoint = hitRay.point - hitRay.collider.gameObject.transform.position;
+            Vector3 newPortalPosition = hitRay.collider.GetComponent<PortalTeleporter>().reciever.transform.position;
+            ray.origin = newPortalPosition + hitPortalPoint;
+            ray.direction = rayDirection;
+
+            Vector3 hitPointPos = hitRay.point;
+            wallDistance += (startRayPoint - hitPointPos).magnitude;
+
+            startRayPoint = ray.origin;
+        }
+
+        if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask))
         {
             Vector3 hitPointPos = hitWallRay.point;
-            wallDistance = (Camera.main.gameObject.transform.position - hitPointPos).magnitude;
+            wallDistance += (startRayPoint - hitPointPos).magnitude;
 
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
             hitWallObject = hitWallRay.collider.gameObject;
         }
-        else if (Physics.Raycast(ray, out hitWallRay, 1000f, WallLayMask2))
+        else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask2))
         {
             Vector3 hitPointPos = hitWallRay.point;
-            wallDistance = (Camera.main.gameObject.transform.position - hitPointPos).magnitude;
+            wallDistance += (startRayPoint - hitPointPos).magnitude;
 
             hitWallObject = hitWallRay.collider.gameObject;
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
@@ -89,5 +119,7 @@ public class CameraAim : MonoBehaviour
         {
             wallDistance = 1000000f;
         }
+
+        UnityEngine.Debug.Log($"wallDistance : {wallDistance}");
     }
 }

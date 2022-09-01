@@ -7,13 +7,13 @@ using UnityEngine.SceneManagement;
 public class Goal : MonoBehaviour
 {
     [SerializeField] ParticleSystem particle;
-    [SerializeField] Image fadeImage;
+    [SerializeField] Image ImgFade;
     bool ending;
     bool realEnd;
-    float fadeValue;
 
     void Start()
     {
+        StartCoroutine("StartScene");
         realEnd = false;
     }
 
@@ -33,19 +33,35 @@ public class Goal : MonoBehaviour
         particle.Play();
 
         yield return new WaitForSeconds(3f);
+        
+        GameManager.Instance.isGameClear = true;
+
+        float fadeValue = 0;
 
         while (fadeValue <= 1)
         {
-            fadeImage.color = new Color(0, 0, 0, fadeValue);
+            ImgFade.color = new Color(0, 0, 0, fadeValue);
             fadeValue += 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
 
         yield return new WaitForSeconds(1f);
 
-        GameManager.Instance.isGameClear = true;
-
         SceneManager.LoadScene(0);
         // 씬 변경
+    }
+
+    IEnumerator StartScene()
+    {
+        float fadeValue = 1;
+
+        while (fadeValue > 0)
+        {
+            ImgFade.color = new Color(0, 0, 0, fadeValue);
+            fadeValue -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        TTS.Instance.TTSPlay($"{GameManager.Instance.playerName} 회원님 안녕하세요. 본 프로그램에 참여해 주셔서 대단히 감사드립니다. 키보드의 W A S D 와 마우스를 이용하여 움직여 보세요");
     }
 }

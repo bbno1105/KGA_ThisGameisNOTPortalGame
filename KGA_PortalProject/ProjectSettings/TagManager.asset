@@ -10,6 +10,7 @@ TagManager:
   - bullet
   - Ground
   - Moon
+  - Dice
   layers:
   - Default
   - TransparentFX

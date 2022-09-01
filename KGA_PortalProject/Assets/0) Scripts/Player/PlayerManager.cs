@@ -56,6 +56,11 @@ public class PlayerManager : MonoBehaviour
         Pick();
         JumpRay();
 
+
+        if(rigid.velocity.y < -10f)
+        {
+            rigid.velocity = new Vector3(rigid.velocity.x, -10f, rigid.velocity.z);
+        }
     }
 
     void KeyInput()
@@ -119,7 +124,7 @@ public class PlayerManager : MonoBehaviour
             {
                 isPick = true;
                 pickObject = cameraAim.hitObject;
-                objectDistance = (cameraAim.hitObject.transform.position - playerCamera.transform.position).magnitude;
+                objectDistance = cameraAim.wallDistance;
                 objectScale = cameraAim.hitObject.transform.localScale;
                 objectRadius = (cameraAim.hitObject.transform.position - cameraAim.hitRay.point).magnitude;
                 if (pickObject.GetComponent<BoxCollider>() != null)
@@ -182,7 +187,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(isPick) // test
         {
-            float wallDistance = (cameraAim.hitWallRay.point - playerCamera.transform.position).magnitude;
+            float wallDistance = cameraAim.wallDistance;
             Vector3 newScale = objectScale * (wallDistance / objectDistance);
             float newScaleValue = newScale.x;
 

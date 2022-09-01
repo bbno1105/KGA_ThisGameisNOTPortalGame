@@ -21,6 +21,11 @@ public class Dice : MonoBehaviour
         {
             maxVelocity = rigid.velocity.magnitude;
         }
+
+        if (rigid.velocity.y < -10f)
+        {
+            rigid.velocity = new Vector3(rigid.velocity.x, -10f, rigid.velocity.z);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
