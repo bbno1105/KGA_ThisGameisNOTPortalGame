@@ -7,7 +7,7 @@ public class PortalTeleporter : MonoBehaviour
     public Transform Player;
 
     public Transform[] Dice;
-    bool[] DiceIsOverlapping;
+    public bool[] DiceIsOverlapping;
 
     public Transform reciever;
 
@@ -18,7 +18,7 @@ public class PortalTeleporter : MonoBehaviour
 
     bool playerIsOverlapping = false;
 
-    private void Start()
+    private void Awake()
     {
         DiceIsOverlapping = new bool[Dice.Length];
 

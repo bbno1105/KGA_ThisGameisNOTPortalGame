@@ -14,7 +14,6 @@ public class CameraAim : MonoBehaviour
     public Vector3 hitWallPos;
     public RaycastHit hitWallRay;
     int wallLayMask;
-    int wallLayMask2;
     int portalMask;
 
     public float wallDistance;
@@ -31,8 +30,7 @@ public class CameraAim : MonoBehaviour
         LayerMask WallLayer2 = LayerMask.NameToLayer("DarkWall");
 
         targetLayMask = 1 << targetLayer.value;
-        wallLayMask = 1 << WallLayer.value;
-        wallLayMask2 = 1 << WallLayer2.value;
+        wallLayMask = (1 << WallLayer.value) + (1 << WallLayer2.value);
         portalMask = LayerMask.GetMask("Portal");
     }
 
@@ -83,40 +81,49 @@ public class CameraAim : MonoBehaviour
         Vector3 startRayPoint = Camera.main.gameObject.transform.position;
 
         wallDistance = 0;
+        float portalDistance = 0;
 
-
-        if (Physics.Raycast(ray, out hitRay, 100000f, portalMask))
+        if (Physics.Raycast(ray, out hitRay, 1000f, portalMask))
         {
             Vector3 rayDirection = hitRay.point - startRayPoint;
             Vector3 hitPortalPoint = hitRay.point - hitRay.collider.gameObject.transform.position;
             Vector3 newPortalPosition = hitRay.collider.GetComponent<PortalTeleporter>().reciever.transform.position;
-            ray.origin = newPortalPosition + hitPortalPoint;
-            ray.direction = rayDirection;
+
+            float wallDistanceforPortal = 0;
+            RaycastHit hitWallRayforPortal;
+            if (Physics.Raycast(ray, out hitWallRayforPortal, 1000f, wallLayMask))
+            {
+                wallDistanceforPortal = Vector3.Distance(startRayPoint,hitWallRayforPortal.point);
+            }
 
             Vector3 hitPointPos = hitRay.point;
-            wallDistance += (startRayPoint - hitPointPos).magnitude;
+            portalDistance = Vector3.Distance(startRayPoint, hitPointPos);
 
-            startRayPoint = ray.origin;
+            if(portalDistance <= wallDistanceforPortal || wallDistanceforPortal == 0)
+            {
+                wallDistance += Vector3.Distance(startRayPoint, hitPointPos);
+                startRayPoint = ray.origin;
+
+                ray.origin = newPortalPosition + hitPortalPoint;
+                ray.direction = rayDirection;
+            }
         }
-        else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask))
+
+        if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask))
         {
             Vector3 hitPointPos = hitWallRay.point;
-            wallDistance += (startRayPoint - hitPointPos).magnitude;
+            wallDistance += Vector3.Distance(startRayPoint, hitPointPos);
 
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
             hitWallObject = hitWallRay.collider.gameObject;
         }
-        else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask2))
-        {
-            Vector3 hitPointPos = hitWallRay.point;
-            wallDistance += (startRayPoint - hitPointPos).magnitude;
+        //else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask2))
+        //{
+        //    Vector3 hitPointPos = hitWallRay.point;
+        //    wallDistance += Vector3.Distance(startRayPoint, hitPointPos);
 
-            hitWallObject = hitWallRay.collider.gameObject;
-            hitWallPos = hitWallRay.collider.gameObject.transform.position;
-        }
-        else
-        {
-            wallDistance = 1000000f;
-        }
+        //    hitWallObject = hitWallRay.collider.gameObject;
+        //    hitWallPos = hitWallRay.collider.gameObject.transform.position;
+        //}
     }
 }
