@@ -95,7 +95,7 @@ public class PortalTeleporter : MonoBehaviour
             playerIsOverlapping = true;
         }
 
-        if (_other.tag == "Dice")
+        if (_other.tag == "Dice" || _other.tag == "Moon")
         {
             for (int i = 0; i < Dice.Length; i++)
             {
@@ -117,7 +117,7 @@ public class PortalTeleporter : MonoBehaviour
 
         }
 
-        if (_other.tag == "Dice")
+        if (_other.tag == "Dice" || _other.tag == "Moon")
         {
             for (int i = 0; i < Dice.Length; i++)
             {

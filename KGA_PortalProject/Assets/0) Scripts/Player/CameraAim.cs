@@ -98,8 +98,7 @@ public class CameraAim : MonoBehaviour
 
             startRayPoint = ray.origin;
         }
-
-        if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask))
+        else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask))
         {
             Vector3 hitPointPos = hitWallRay.point;
             wallDistance += (startRayPoint - hitPointPos).magnitude;

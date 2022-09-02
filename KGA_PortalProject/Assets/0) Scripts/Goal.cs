@@ -62,6 +62,6 @@ public class Goal : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
 
-        TTS.Instance.TTSPlay($"{GameManager.Instance.playerName} 회원님 안녕하세요. 본 프로그램에 참여해 주셔서 대단히 감사드립니다. 키보드의 W A S D 와 마우스를 이용하여 움직여 보세요");
+        TTS.Instance.TTSPlay($"{GameManager.Instance.playerName} 회원님 안녕하세요. 본 프로그램에 참여해 주셔서 대단히 감사드립니다.");
     }
 }

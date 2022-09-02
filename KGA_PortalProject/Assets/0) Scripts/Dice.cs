@@ -26,6 +26,11 @@ public class Dice : MonoBehaviour
         {
             rigid.velocity = new Vector3(rigid.velocity.x, -10f, rigid.velocity.z);
         }
+
+        if (this.transform.position.y < -20f)
+        {
+            this.transform.position = this.transform.parent.position;
+        }
     }
 
     void OnCollisionEnter(Collision collision)

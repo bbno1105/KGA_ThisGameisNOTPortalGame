@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using OVR;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -60,6 +61,11 @@ public class PlayerManager : MonoBehaviour
         if(rigid.velocity.y < -10f)
         {
             rigid.velocity = new Vector3(rigid.velocity.x, -10f, rigid.velocity.z);
+        }
+
+        if(player.transform.position.y < -10f)
+        {
+            SceneManager.LoadScene(1);
         }
     }
 
