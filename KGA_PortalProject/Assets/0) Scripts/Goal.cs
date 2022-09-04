@@ -62,6 +62,6 @@ public class Goal : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
 
-        TTS.Instance.TTSPlay($"{GameManager.Instance.playerName} 회원님 안녕하세요. 본 프로그램에 참여해 주셔서 대단히 감사드립니다.");
+        TTS.Instance.TTSPlay($"{GameManager.Instance.playerName}님 안녕하세요. 프로그램에 참여해 주셔서 대단히 감사드립니다. 본 프로그램에서는 한 개발자의 게임 이야기를 하려고 합니다.");
     }
 }

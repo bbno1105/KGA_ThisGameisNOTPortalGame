@@ -117,6 +117,10 @@ public class CameraAim : MonoBehaviour
             hitWallPos = hitWallRay.collider.gameObject.transform.position;
             hitWallObject = hitWallRay.collider.gameObject;
         }
+        else
+        {
+            wallDistance = 100000f;
+        }
         //else if (Physics.Raycast(ray, out hitWallRay, 1000f, wallLayMask2))
         //{
         //    Vector3 hitPointPos = hitWallRay.point;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TTSGuide : MonoBehaviour
 {
+    [TextArea]
     [SerializeField] string TxtGuide;
 
     bool isTrigger;
